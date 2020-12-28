@@ -1,23 +1,14 @@
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
 
+const port = 4000;
 const app = express();
+app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 
 const SELECT_ALL_ACTORS = "SELECT * FROM actors";
-
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "root",
-//   database: "imdb_ijs",
-// });
-
-// connection.connect((err) => {
-//   if (err) {
-//     return err;
-//   }
-// });
 
 var pool = mysql.createPool({
   connectionLimit: 10,
@@ -27,12 +18,8 @@ var pool = mysql.createPool({
   database: "imdb_ijs",
 });
 
-// console.log(connection);
-
-app.use(cors());
-
 app.get("/", (req, res) => {
-  res.send("Hello there");
+  res.sendFile("home.html", { root: __dirname });
 });
 
 app.get("/actors", (req, res) => {
@@ -42,6 +29,6 @@ app.get("/actors", (req, res) => {
   });
 });
 
-app.listen(4000, () => {
-  console.log("Listening on port 4000");
+app.listen(port, () => {
+  console.log("Listening on port " + port);
 });
