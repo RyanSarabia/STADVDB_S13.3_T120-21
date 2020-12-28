@@ -8,7 +8,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
-const SELECT_ALL_ACTORS = "SELECT * FROM actors";
+const SELECT_ALL_ACTORS = "SELECT * FROM actors LIMIT 100";
 
 var pool = mysql.createPool({
   connectionLimit: 10,
