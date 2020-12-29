@@ -1,23 +1,14 @@
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
 
+const port = 4000;
 const app = express();
+app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 
-const SELECT_ALL_ACTORS = "SELECT * FROM actors";
-
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "root",
-//   database: "imdb_ijs",
-// });
-
-// connection.connect((err) => {
-//   if (err) {
-//     return err;
-//   }
-// });
+const SELECT_ALL_ACTORS = "SELECT * FROM actors LIMIT 100";
 
 var pool = mysql.createPool({
   connectionLimit: 10,
@@ -27,21 +18,123 @@ var pool = mysql.createPool({
   database: "imdb_ijs",
 });
 
-// console.log(connection);
-
-app.use(cors());
-
-app.get("/", (req, res) => {
-  res.send("Hello there");
+app.listen(port, () => {
+  console.log("Listening on port " + port);
 });
 
-app.get("/actors", (req, res) => {
-  pool.query(SELECT_ALL_ACTORS, function (error, results, fields) {
+app.get("/", (req, res) => {
+  res.sendFile("home.html", { root: __dirname });
+});
+
+const pageLimit = 20;
+
+app.get("/name", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query =
+    'SELECT name FROM movies WHERE name LIKE "%' +
+    strSearch +
+    '%" LIMIT ' +
+    pageLimit +
+    " OFFSET " +
+    offset;
+
+  pool.query(query, function (error, results, fields) {
     if (error) throw error;
     res.json(results);
   });
 });
 
-app.listen(4000, () => {
-  console.log("Listening on port 4000");
+app.get("/id", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query = "SELECT name FROM movies WHERE movies.id = " + strSearch;
+
+  pool.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.json(results);
+  });
 });
+
+app.get("/year", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query =
+    "SELECT name FROM movies WHERE YEAR = " +
+    strSearch +
+    " LIMIT " +
+    pageLimit +
+    " OFFSET " +
+    offset;
+
+  pool.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+
+app.get("/rating/lessorequal", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query =
+    "SELECT name FROM movies WHERE movies.rank <= " +
+    strSearch +
+    " LIMIT " +
+    pageLimit +
+    " OFFSET " +
+    offset;
+
+  pool.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+
+app.get("/rating/greaterorequal", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query =
+    "SELECT name FROM movies WHERE movies.rank >= " +
+    strSearch +
+    " LIMIT " +
+    pageLimit +
+    " OFFSET " +
+    offset;
+
+  pool.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+
+/**
+Single Query: (Single-table query must be written for the largest table (degree > 10) only.)
+1. Find movie by name
+SELECT name FROM movies
+WHERE name LIKE "%star wars%"
+LIMIT 20 OFFSET 0
+
+2. Find movie by id
+SELECT name FROM movies
+WHERE movies.id = 0
+
+3. Find movies by year shown
+SELECT name FROM movies
+WHERE YEAR = 2000
+LIMIT 20 OFFSET 0
+
+4. Find movies by finding less than or equal to the rating specified
+SELECT name FROM movies
+WHERE movies.rank < 5.0
+LIMIT 20 OFFSET 0
+
+4. Find movies by finding more than or equal to the rating specified
+SELECT name FROM movies
+WHERE movies.rank < 5.0
+LIMIT 20 OFFSET 0
+ */
