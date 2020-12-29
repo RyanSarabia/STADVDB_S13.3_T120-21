@@ -3,26 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> 
 
-    <title>BUBOI</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="/styles.css" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <title>IMDB DATASET</title>
 </head>
 <body class="p-5">
-    <h1>IMDB DATASET</h1>
-    <Form>
-        <label for="searchMode">search by:</label>
-        <select name="searchMode" id="searchMode">
-            <option value="movieName">Movie Name</option>
-            <option value="movieID">Movie ID</option>
-            <option value="yearShown">Year Shown</option>
-            <option value="directorName">Director's Name</option>
-            <option value="directorID">Director's ID</option>
-        </select>
-        <input type="text" name="searchQuery" id="searchQuery" placeholder="search query here...">
-        <input type="button" name="searchBtn" id="searchBtn" value="Search">
-    </Form>
+    <h1 class="text-center font-weight-bold">IMDB DATASET</h1>
+    <div class="row p-4 d-flex justify-content-center align-items-center">
+        <div>
+            <label for="searchMode" class="mt-2">search by:</label>
+            <select name="searchMode" id="searchMode">
+                <option value="/name">Movie Name</option>
+                <option value="movieID">Movie ID</option>
+                <option value="yearShown">Year Shown</option>
+                <option value="directorName">Director's Name</option>
+                <option value="directorID">Director's ID</option>
+            </select>
+        </div>
+        <div class="mx-4 d-flex">
+            <input type="text" name="searchQuery" id="searchQuery" placeholder="search query here...">
+            <input type="button" name="searchBtn" id="searchBtn" value="Search">
+        </div>
+        <div class="px-3 d-flex justify-content-center align-items-center">
+            <a name="prevBtn" id="prevBtn"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
+            <Text name="pageNum" id="pageNum" class="px-3 h5"></Text>
+            <a name="nextBtn" id="nextBtn"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
+        </div>
+    </div>
     <ol name="results" id="results">
     </ol>
 </body>
