@@ -18,6 +18,10 @@ var pool = mysql.createPool({
   database: "imdb_ijs",
 });
 
+app.listen(port, () => {
+  console.log("Listening on port " + port);
+});
+
 app.get("/", (req, res) => {
   res.sendFile("home.html", { root: __dirname });
 });
@@ -42,8 +46,70 @@ app.get("/name", (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log("Listening on port " + port);
+app.get("/id", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query = "SELECT name FROM movies WHERE movies.id = " + strSearch;
+
+  pool.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+
+app.get("/year", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query =
+    "SELECT name FROM movies WHERE YEAR = " +
+    strSearch +
+    " LIMIT " +
+    pageLimit +
+    " OFFSET " +
+    offset;
+
+  pool.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+
+app.get("/rating/lessorequal", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query =
+    "SELECT name FROM movies WHERE movies.rank <= " +
+    strSearch +
+    " LIMIT " +
+    pageLimit +
+    " OFFSET " +
+    offset;
+
+  pool.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+
+app.get("/rating/greaterorequal", (req, res) => {
+  var strSearch = req.query.strSearch;
+  var pageNum = req.query.pageNum - 1;
+  var offset = pageNum * pageLimit;
+  var query =
+    "SELECT name FROM movies WHERE movies.rank >= " +
+    strSearch +
+    " LIMIT " +
+    pageLimit +
+    " OFFSET " +
+    offset;
+
+  pool.query(query, function (error, results, fields) {
+    if (error) throw error;
+    res.json(results);
+  });
 });
 
 /**
