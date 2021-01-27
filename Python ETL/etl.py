@@ -16,7 +16,7 @@ import mysql.connector
 imdbOriginal = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Disgaea___4",
+    password="change",
     database="imdb_ijs"
 )
 
