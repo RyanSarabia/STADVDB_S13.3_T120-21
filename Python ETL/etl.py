@@ -16,29 +16,40 @@ import mysql.connector
 imdbOriginal = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="lagay mo password mo",
+    password="Disgaea___4",
     database="imdb_ijs"
 )
 
-imdbWarehouse = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="lagay mo password mo",
-    database="imdb_warehouse"
-)
+# imdbWarehouse = mysql.connector.connect(
+#    host="localhost",
+#    user="root",
+#    password="Disgaea___4",
+#    database="imdb_warehouse"
+# )
 
 
 originalCursor = imdbOriginal.cursor()
-warehouseCursor = imdbWarehouse.cursor()
+#warehouseCursor = imdbWarehouse.cursor()
 
-originalCursor.execute("Show databases")
-for db in originalCursor:
-    print(db)
+originalCursor.execute('SELECT * FROM movies')
+movies = originalCursor.fetchall()
+
+movies = etl.pushheader(movies, ['id', 'name', 'year', 'rank'])
+
+originalCursor.execute('SELECT * FROM movies_genres')
+movies_genres = originalCursor.fetchall()
+movies_genres = etl.pushheader(movies_genres, ['movie_id', 'genre'])
 
 
-table = etl.fromdb(imdbOriginal, 'SELECT * FROM movies')
-print(table)
+#movies_directors = etl.fromdb(imdbOriginal, 'SELECT * FROM movies_directors')
+#directors = etl.fromdb(imdbOriginal, 'SELECT * FROM directors')
+#directors_genres = etl.fromdb(imdbOriginal, 'SELECT * FROM directors_genres')
+#actors = etl.fromdb(imdbOriginal, 'SELECT * FROM actors')
+#roles = etl.fromdb(imdbOriginal, 'SELECT * FROM roles')
 
+moviesAndGenres = etl.join(movies, movies_genres, lkey='id', rkey='movie_id')
+
+print(moviesAndGenres)
 
 # set connections and cursors
 # grab value by referencing key dictionary
