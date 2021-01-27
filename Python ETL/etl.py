@@ -16,14 +16,14 @@ import mysql.connector
 imdbOriginal = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Disgaea___4",
+    password="lagay mo password mo",
     database="imdb_ijs"
 )
 
 imdbWarehouse = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Disgaea___4",
+    password="lagay mo password mo",
     database="imdb_warehouse"
 )
 
