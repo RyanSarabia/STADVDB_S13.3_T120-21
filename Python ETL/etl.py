@@ -16,7 +16,7 @@ import mysql.connector
 imdbOriginal = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="change",
+    password="password",
     database="imdb_ijs"
 )
 
@@ -31,25 +31,52 @@ imdbOriginal = mysql.connector.connect(
 originalCursor = imdbOriginal.cursor()
 #warehouseCursor = imdbWarehouse.cursor()
 
+#### Assign Original Tables to Variables ####
 originalCursor.execute('SELECT * FROM movies')
 movies = originalCursor.fetchall()
-
 movies = etl.pushheader(movies, ['id', 'name', 'year', 'rank'])
 
 originalCursor.execute('SELECT * FROM movies_genres')
 movies_genres = originalCursor.fetchall()
 movies_genres = etl.pushheader(movies_genres, ['movie_id', 'genre'])
 
+""" originalCursor.execute('SELECT * FROM directors')
+directors = originalCursor.fetchall()
+directors = etl.pushheader(directors, ['id', 'first_name', 'last_name'])
 
-#movies_directors = etl.fromdb(imdbOriginal, 'SELECT * FROM movies_directors')
-#directors = etl.fromdb(imdbOriginal, 'SELECT * FROM directors')
-#directors_genres = etl.fromdb(imdbOriginal, 'SELECT * FROM directors_genres')
-#actors = etl.fromdb(imdbOriginal, 'SELECT * FROM actors')
-#roles = etl.fromdb(imdbOriginal, 'SELECT * FROM roles')
+originalCursor.execute('SELECT * FROM directors_genres')
+directors_genres = originalCursor.fetchall()
+directors_genres = etl.pushheader(
+    directors_genres, ['director_id', 'genre', 'prob']) """
 
+originalCursor.execute('SELECT * FROM movies_directors')
+movies_directors = originalCursor.fetchall()
+movies_directors = etl.pushheader(
+    movies_directors, ['director_id', 'movie_id'])
+
+""" originalCursor.execute('SELECT * FROM actors')
+actors = originalCursor.fetchall()
+actors = etl.pushheader(actors, ['id', 'first_name', 'last_name', 'gender']) """
+
+originalCursor.execute('SELECT movie_id, actor_id FROM roles')
+actorIdOnly = originalCursor.fetchall()
+actorIdOnly = etl.pushheader(actorIdOnly, ['movie_id', 'actor_id'])
+
+
+#### Denormalizing Original Tables ####
+
+# Denormalize movies_genres into movies
 moviesAndGenres = etl.join(movies, movies_genres, lkey='id', rkey='movie_id')
 
-print(moviesAndGenres)
+# Denormalize movies_directors into movies
+moviesAndGenresAndDirectors = etl.join(
+    moviesAndGenres, movies_directors, lkey='id', rkey='movie_id')
+
+# Denormalize roles into movies
+moviesAndGenresAndDirectorsAndRoles = etl.join(
+    moviesAndGenresAndDirectors, actorIdOnly, lkey='id', rkey='movie_id')
+print(moviesAndGenresAndDirectorsAndRoles)
+
 
 # set connections and cursors
 # grab value by referencing key dictionary
