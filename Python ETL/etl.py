@@ -89,20 +89,17 @@ actorIdOnly = etl.pushheader(actorIdOnly, ['movie_id', 'actor_id'])
 # Denormalize movies_genres into movies
 moviesAndGenres = etl.join(movies, movies_genres, key='movie_id')
 
-print(moviesAndGenres)
 
 # Denormalize movies_directors into movies
 moviesAndGenresAndDirectors = etl.join(
     moviesAndGenres, movies_directors, key='movie_id')
 
-print(moviesAndGenresAndDirectors)
+
 # Denormalize roles into movies
 moviesAndGenresAndDirectorsAndRoles = etl.join(
     moviesAndGenresAndDirectors, actorIdOnly, key='movie_id')
 
-print(moviesAndGenresAndDirectorsAndRoles)
-movieCount = etl.nrows(moviesAndGenresAndDirectorsAndRoles)
-print(movieCount)
+
 # Add fullname to actors
 
 actors = etl.join(actors, actorfullname, key='id')
@@ -110,8 +107,7 @@ actors = etl.join(actors, actorfullname, key='id')
 actorsAndRoles = etl.join(
     actors, actorIdOnly, lkey='id', rkey='actor_id')
 
-actorCount = etl.nrows(actorsAndRoles)
-print(actorCount)
+
 # Add fullname to directors
 directors = etl.join(directors, directorfullname, key='id')
 
@@ -123,8 +119,6 @@ directorsAndGenres = etl.join(
 directorsAndGenresAndMovies = etl.join(
     directorsAndGenres, movies_directors, lkey='id', rkey='director_id')
 
-directorCount = etl.nrows(directorsAndGenresAndMovies)
-print(directorCount)
 
 # print(directorsAndGenresAndMovies)
 # print(actorsAndRoles)
