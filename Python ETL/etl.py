@@ -17,13 +17,13 @@ import mysql.connector
 imdbOriginal = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="palitan mo brian",
+    password="password",
     database="imdb_ijs"
 )
 
 imdbWarehouse = pymysql.connect(host='localhost',
                                 user='root',
-                                password='palitan mo brian',
+                                password='password',
                                 database='imdb_warehouse')
 
 imdbWarehouse.cursor().execute('SET SQL_MODE=ANSI_QUOTES')
@@ -146,11 +146,11 @@ actorsAndRolesTail = etl.tail(actorsAndRoles, 1715983)
 
 etl.todb(moviesTail, imdbWarehouse, 'movies')
 etl.todb(ranksHead, imdbWarehouse, 'ranks')
-etl.todb(ranksTail, imdbWarehouse, 'ranks')
+etl.appenddb(ranksTail, imdbWarehouse, 'ranks')
 etl.todb(directorsAndGenresAndMovies, imdbWarehouse, 'directors')
 etl.todb(actorsAndRolesHead, imdbWarehouse, 'actors')
-etl.todb(actorsAndRolesTail, imdbWarehouse, 'actors')
-etl.todb(moviesHead, imdbWarehouse, 'movies')
+etl.appenddb(actorsAndRolesTail, imdbWarehouse, 'actors')
+etl.appenddb(moviesHead, imdbWarehouse, 'movies')
 
 
 # set connections and cursors
