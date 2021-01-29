@@ -17,13 +17,13 @@ import mysql.connector
 imdbOriginal = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="",
+    password="Disgaea___4",
     database="imdb_ijs"
 )
 
 imdbWarehouse = pymysql.connect(host='localhost',
                                 user='root',
-                                password='',
+                                password='Disgaea___4',
                                 database='imdb_warehouse')
 
 imdbWarehouse.cursor().execute('SET SQL_MODE=ANSI_QUOTES')
@@ -134,6 +134,8 @@ actors = etl.cut(actors, 'id', 'gender', 'full_name')
 movies = etl.rename(movies, 'movie_id', 'id')
 
 ranks = etl.distinct(ranks)
+ranks = etl.selectnotnone(ranks, 'rank')
+
 movies = etl.distinct(movies)
 directors = etl.distinct(directors)
 actors = etl.distinct(actors)
@@ -148,11 +150,11 @@ temp = etl.nrows(directors)
 print(temp) """
 
 
-ranksHead = etl.head(
+""" ranksHead = etl.head(
     ranks, 1291233)
 ranksTail = etl.tail(
     ranks, 1291233)
-
+ """
 
 """ etl.todb(moviesHead, imdbWarehouse, 'movies')
 etl.appenddb(moviesTail, imdbWarehouse, 'movies')
@@ -161,8 +163,9 @@ etl.appenddb(ranksTail, imdbWarehouse, 'ranks')
 etl.todb(actorsAndRolesHead, imdbWarehouse, 'actors')
 etl.appenddb(actorsAndRolesTail, imdbWarehouse, 'actors') """
 
-etl.todb(ranksHead, imdbWarehouse, 'ranks')
-etl.appenddb(ranksTail, imdbWarehouse, 'ranks')
+""" etl.todb(ranksHead, imdbWarehouse, 'ranks')
+etl.appenddb(ranksTail, imdbWarehouse, 'ranks') """
+etl.todb(ranks, imdbWarehouse, 'ranks')
 etl.todb(movies, imdbWarehouse, 'movies')
 etl.todb(actors, imdbWarehouse, 'actors')
 etl.todb(directors, imdbWarehouse, 'directors')
