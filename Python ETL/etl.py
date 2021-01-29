@@ -17,13 +17,13 @@ import mysql.connector
 imdbOriginal = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Disgaea___4",
+    password="",
     database="imdb_ijs"
 )
 
 imdbWarehouse = pymysql.connect(host='localhost',
                                 user='root',
-                                password='Disgaea___4',
+                                password='',
                                 database='imdb_warehouse')
 
 imdbWarehouse.cursor().execute('SET SQL_MODE=ANSI_QUOTES')
