@@ -104,20 +104,17 @@ moviesAndGenresAndDirectorsAndRoles = etl.join(
 
 actors = etl.join(actors, actorfullname, key='id')
 # Denormalize roles into actors
-actorsAndRoles = etl.join(
-    actors, actorIdOnly, lkey='id', rkey='actor_id')
+""" actorsAndRoles = etl.join(
+    actors, actorIdOnly, lkey='id', rkey='actor_id') """
 
 
 # Add fullname to directors
 directors = etl.join(directors, directorfullname, key='id')
 
-# Denormalize directors_genres into directors
-directorsAndGenres = etl.join(
-    directors, directors_genres, lkey='id', rkey='director_id')
 
 # Denormalize movies_directors into directors
-directorsAndGenresAndMovies = etl.join(
-    directorsAndGenres, movies_directors, lkey='id', rkey='director_id')
+directorsAndMovies = etl.join(
+    directors, movies_directors, lkey='id', rkey='director_id')
 
 
 # print(directorsAndGenresAndMovies)
@@ -127,30 +124,48 @@ directorsAndGenresAndMovies = etl.join(
 ranks = etl.cut(moviesAndGenresAndDirectorsAndRoles,
                 'movie_id', 'rank', 'director_id', 'actor_id')
 movies = etl.cut(moviesAndGenresAndDirectorsAndRoles,
-                 'movie_id', 'name', 'year', 'genre')
+                 'movie_id', 'name', 'year')
+
+directors = etl.cut(directorsAndMovies, 'id', 'full_name', 'movie_id')
+
+actors = etl.cut(actors, 'id', 'gender', 'full_name')
+
 
 movies = etl.rename(movies, 'movie_id', 'id')
 
-moviesHead = etl.head(
-    movies, 2120712)
-moviesTail = etl.tail(
-    movies, 2120712)
+ranks = etl.distinct(ranks)
+movies = etl.distinct(movies)
+directors = etl.distinct(directors)
+actors = etl.distinct(actors)
+
+""" temp = etl.nrows(ranks)
+print(temp)
+temp = etl.nrows(movies)
+print(temp)
+temp = etl.nrows(actors)
+print(temp)
+temp = etl.nrows(directors)
+print(temp) """
+
 
 ranksHead = etl.head(
-    ranks, 2120712)
+    ranks, 1291233)
 ranksTail = etl.tail(
-    ranks, 2120712)
+    ranks, 1291233)
 
-actorsAndRolesHead = etl.head(actorsAndRoles, 1715983)
-actorsAndRolesTail = etl.tail(actorsAndRoles, 1715983)
 
-etl.todb(moviesTail, imdbWarehouse, 'movies')
+""" etl.todb(moviesHead, imdbWarehouse, 'movies')
+etl.appenddb(moviesTail, imdbWarehouse, 'movies')
 etl.todb(ranksHead, imdbWarehouse, 'ranks')
 etl.appenddb(ranksTail, imdbWarehouse, 'ranks')
-etl.todb(directorsAndGenresAndMovies, imdbWarehouse, 'directors')
 etl.todb(actorsAndRolesHead, imdbWarehouse, 'actors')
-etl.appenddb(actorsAndRolesTail, imdbWarehouse, 'actors')
-etl.appenddb(moviesHead, imdbWarehouse, 'movies')
+etl.appenddb(actorsAndRolesTail, imdbWarehouse, 'actors') """
+
+etl.todb(ranksHead, imdbWarehouse, 'ranks')
+etl.appenddb(ranksTail, imdbWarehouse, 'ranks')
+etl.todb(movies, imdbWarehouse, 'movies')
+etl.todb(actors, imdbWarehouse, 'actors')
+etl.todb(directors, imdbWarehouse, 'directors')
 
 
 # set connections and cursors
