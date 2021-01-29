@@ -1,0 +1,22 @@
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
+body {
+  overflow: scroll;
+}
+
+body * {
+  /* border: 1px solid red; */
+  /* height: 100%; */
+}
+
+.bold {
+  font-weight: bold;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+}
