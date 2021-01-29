@@ -10,7 +10,52 @@ $pageNum = $_REQUEST["pageNum"] - 1;
 $pageLimit = 20;
 $offset = $pageNum * $pageLimit;
 
-$sql = 'SELECT * FROM ranks LIMIT ' . $pageLimit . ' OFFSET ' . $offset;
+switch ($mode) {
+    case "rollupDirector":
+        $sql = 'SELECT
+                    director_id as Director
+                    ,TRUNCATE(SUM(ranks.rank)/COUNT(ranks.rank), 2)  as Rating
+                FROM
+                    ranks
+                WHERE ranks.rank is not NULL
+                GROUP BY 
+                    director_id
+                LIMIT ' . $pageLimit . ' OFFSET ' . $offset;
+        break;
+    case "rollupActor":
+        $sql = 'SELECT
+                    director_id as Director
+                    ,actor_id as Actor
+                    -- ,movie_id
+                    ,TRUNCATE(SUM(ranks.rank)/COUNT(ranks.rank), 2)  as Rating
+                FROM
+                    ranks
+                WHERE ranks.rank is not NULL
+                GROUP BY 
+                    director_id
+                    ,actor_id
+                    -- ,movie_id
+                WITH ROLLUP
+                LIMIT ' . $pageLimit . ' OFFSET ' . $offset;
+        break;
+    case "rollupMovie":
+        $sql = 'SELECT
+                    director_id as Director
+                    ,actor_id as Actor
+                    ,movie_id as Movie
+                    ,TRUNCATE(SUM(ranks.rank)/COUNT(ranks.rank), 2)  as Rating
+                FROM
+                    ranks
+                WHERE ranks.rank is not NULL
+                GROUP BY 
+                    director_id
+                    ,actor_id
+                    ,movie_id
+                WITH ROLLUP
+                LIMIT ' . $pageLimit . ' OFFSET ' . $offset;
+        break;
+}
+
 
 $result = $con->query($sql) or die($con->connect_error);
 
@@ -25,12 +70,28 @@ foreach ($finfo as $val) {
 echo "</tr>";
 $rowCount = 0;
 while ($row = $result->fetch_array()) {
-    echo "<tr>";
+
+    $rollup = 0;
+    for($i = 0; $i < $numFields; $i++){
+        if ($row[$i] == ""){
+            $rollup++;
+        }
+    }
+
+    echo '<tr>';
     $rowCount++;
     echo "<td>" . ($offset+$rowCount) . "</td>";
 
+    $rollupOn = false;
     for($i = 0; $i < $numFields; $i++){
-        echo "<td>" . $row[$i] . "</td>";
+        if($numFields - $i == $rollup+2){
+            $rollupOn = true;
+        }
+        if ($rollupOn && $row[$i] != ""){
+            echo '<td class="rollup'.$rollup.'">' . $row[$i] . '</td>';
+        } else {
+            echo "<td>" . $row[$i] . "</td>";
+        }
     }
     echo "</tr>";
 };

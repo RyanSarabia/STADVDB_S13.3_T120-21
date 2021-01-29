@@ -13,10 +13,34 @@ body * {
   font-weight: bold;
 }
 
+.rollup0 {
+  background-color: rgb(224, 252, 255);
+}
+
+.rollup1 {
+  background-color: rgb(196, 249, 255);
+}
+
+.rollup2 {
+  background-color: rgb(148, 244, 255);
+}
+
+/* .blank {
+  background-color: black;
+  color: white;
+  text-align: center;
+} */
+
 table,
 th,
 td {
   border: 1px solid black;
   border-collapse: collapse;
   padding: 5px;
+}
+th {
+  background-color: black;
+  color: white;
+  border-color: white;
+  text-align: center;
 }
