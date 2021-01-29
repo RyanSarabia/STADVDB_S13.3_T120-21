@@ -21,20 +21,24 @@
         <div>
             <label for="searchMode" class="mt-2">search by:</label>
             <select name="searchMode" id="searchMode">
-                <!-- Single Table Queries -->
+                <option value="rollupDirector">Director Average Rating</option>
+                <option value="rollupActor">Actors Average Rating</option>
+                <option value="rollupMovie">Movies Rating</option>
+
+                <!-- Single Table Queries
                 <option value="name">Movie by Movie Name</option>
                 <option value="id">Movie by Movie ID</option>
                 <option value="year">Movie by Year Shown</option>
                 <option value="ratinglessorequal">Movie with Rating Less than or Equal to</option>
                 <option value="ratinggreaterorequal">Movie with Rating Greater than or Equal to</option>
-                <!-- Two Table Queries -->
+                Two Table Queries
                 <option value="directorname">Movie by Director Name</option>
                 <option value="directorid">Movie by Director ID</option>
-                <!-- Three Table Queries -->
+                Three Table Queries
                 <option value="movietoactor">Actors and the roles they played on a movie</option>
                 <option value="actorgenre">No. of times actor played in a genre</option>
-                <!-- Four to Six Table Queries -->
-                <option value="actordirector">No. of times actor played under a director</option>
+                Four to Six Table Queries
+                <option value="actordirector">No. of times actor played under a director</option> -->
             </select>
         </div>
         <div class="mx-4 d-flex">
