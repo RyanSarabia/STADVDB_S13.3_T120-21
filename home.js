@@ -7,7 +7,7 @@ var maxPage = 100;
 
 $(document).ready(function () {
   mode = $("#searchMode").val();
-  $("#pageNum").text(pageNum);
+  $("#pageNum").val(pageNum);
   search();
 
   $("#searchMode").change(function () {
@@ -60,6 +60,23 @@ $(document).ready(function () {
     search();
   });
 
+  $("#pageNum").keyup(function (e) {
+    var key = e.which;
+    if (key == 13) {
+      var val = $("#pageNum").val();
+      if (val > 0 && val <= maxPage) {
+        pageNum = val;
+        search();
+      } else {
+        $("#pageNum").val(pageNum);
+      }
+    }
+  });
+
+  $("#pageNum").focusout(function () {
+    $("#pageNum").val(pageNum);
+  });
+
   $("#prevBtn").on("click", function () {
     if (pageNum > 1) {
       pageNum--;
@@ -79,7 +96,7 @@ function search() {
   $("#results").empty();
   $("#resultsCaption").empty();
   $("#results").attr("start", pageLimit * (pageNum - 1) + 1);
-  $("#pageNum").text(pageNum);
+  $("#pageNum").val(pageNum);
   $("#resultsCaption").append("Loading...");
 
   strMode = $("#searchMode option:selected").text();

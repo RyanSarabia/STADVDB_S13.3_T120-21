@@ -16,7 +16,7 @@
 </head>
 
 <body class="p-5">
-    <h1 class="text-center font-weight-bold">IMDB DATASET</h1>
+    <h1 class="text-center font-weight-bold">IMDB RATINGS</h1>
     <div class="row p-4 d-flex justify-content-center align-items-center">
         <div>
             <label for="searchMode" class="mt-2">search by:</label>
@@ -24,21 +24,6 @@
                 <option value="rollupDirector">Director Average Rating</option>
                 <option value="rollupActor">Actors Average Rating</option>
                 <option value="rollupMovie">Movies Rating</option>
-
-                <!-- Single Table Queries
-                <option value="name">Movie by Movie Name</option>
-                <option value="id">Movie by Movie ID</option>
-                <option value="year">Movie by Year Shown</option>
-                <option value="ratinglessorequal">Movie with Rating Less than or Equal to</option>
-                <option value="ratinggreaterorequal">Movie with Rating Greater than or Equal to</option>
-                Two Table Queries
-                <option value="directorname">Movie by Director Name</option>
-                <option value="directorid">Movie by Director ID</option>
-                Three Table Queries
-                <option value="movietoactor">Actors and the roles they played on a movie</option>
-                <option value="actorgenre">No. of times actor played in a genre</option>
-                Four to Six Table Queries
-                <option value="actordirector">No. of times actor played under a director</option> -->
             </select>
         </div>
         <div class="mx-4 d-flex">
@@ -48,7 +33,7 @@
         </div>
         <div class="px-3 d-flex justify-content-center align-items-center">
             <a name="prevBtn" id="prevBtn"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
-            <Text name="pageNum" id="pageNum" class="px-3 h5"></Text>
+            <input type="number" name="pageNum" id="pageNum" min="1" class="px-3 h5"></Text>
             <a name="nextBtn" id="nextBtn"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
         </div>
     </div>
