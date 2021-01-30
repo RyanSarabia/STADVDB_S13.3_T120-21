@@ -121,71 +121,30 @@ directorsAndMovies = etl.join(
 # print(actorsAndRoles)
 # print(moviesAndGenresAndDirectorsAndRoles)
 
+# Delete unnecessary columns from all tables
 ranks = etl.cut(moviesAndGenresAndDirectorsAndRoles,
                 'movie_id', 'rank', 'director_id', 'actor_id')
 movies = etl.cut(moviesAndGenresAndDirectorsAndRoles,
                  'movie_id', 'name', 'year')
-
 directors = etl.cut(directorsAndMovies, 'id', 'full_name', 'movie_id')
-
 actors = etl.cut(actors, 'id', 'gender', 'full_name')
 
+# Rename id to include table name
+directors = etl.rename(directors, 'id', 'director_id')
+actors = etl.rename(actors, 'id', 'actor_id')
 
-movies = etl.rename(movies, 'movie_id', 'id')
-
+# Remove rows with NULL ranks
 ranks = etl.distinct(ranks)
 ranks = etl.selectnotnone(ranks, 'rank')
 
+# Remove duplicates after cutting columns
 movies = etl.distinct(movies)
 directors = etl.distinct(directors)
 actors = etl.distinct(actors)
 
-""" temp = etl.nrows(ranks)
-print(temp)
-temp = etl.nrows(movies)
-print(temp)
-temp = etl.nrows(actors)
-print(temp)
-temp = etl.nrows(directors)
-print(temp) """
 
-
-""" ranksHead = etl.head(
-    ranks, 1291233)
-ranksTail = etl.tail(
-    ranks, 1291233)
- """
-
-""" etl.todb(moviesHead, imdbWarehouse, 'movies')
-etl.appenddb(moviesTail, imdbWarehouse, 'movies')
-etl.todb(ranksHead, imdbWarehouse, 'ranks')
-etl.appenddb(ranksTail, imdbWarehouse, 'ranks')
-etl.todb(actorsAndRolesHead, imdbWarehouse, 'actors')
-etl.appenddb(actorsAndRolesTail, imdbWarehouse, 'actors') """
-
-""" etl.todb(ranksHead, imdbWarehouse, 'ranks')
-etl.appenddb(ranksTail, imdbWarehouse, 'ranks') """
+# Insert final tables into data warehouse
 etl.todb(ranks, imdbWarehouse, 'ranks')
 etl.todb(movies, imdbWarehouse, 'movies')
 etl.todb(actors, imdbWarehouse, 'actors')
 etl.todb(directors, imdbWarehouse, 'directors')
-
-
-# set connections and cursors
-# grab value by referencing key dictionary
-#sourceConn = pg.connect(dbCnxns['imdb_ijs'])
-# grab value by referencing key dictionary
-#targetConn = pg.connect(dbCnxns['imdb_warehouse'])
-#sourceCursor = sourceConn.cursor()
-#targetCursor = targetConn.cursor()
-
-# retrieve the names of the source tables to be copied
-# originalCursor.execute(
-#    """select table_name from information_schema.columns where table_name in ('orders','returns') group by 1""")
-#sourceTables = originalCursor.fetchall()
-
-# iterate through table names to copy over
-# for t in sourceTables:
-#    targetCursor.execute("drop table if exists %s" % (t[0]))
-#    sourceDs = etl.fromdb(sourceConn, 'select * from %s' % (t[0]))
-#    etl.todb(sourceDs, targetConn, t[0], create=True, sample=10000)
