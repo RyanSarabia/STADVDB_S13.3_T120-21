@@ -38,6 +38,8 @@
         </div>
     </div>
     <p name="resultsCaption" id="resultsCaption"></p>
+    <button type="button" class="btn btn-primary">ROLL UP</button>
+    <button type="button" class="btn btn-primary">DRILL DOWN</button>
     <table name="results" id="results">
     </table>
 </body>

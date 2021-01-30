@@ -126,7 +126,7 @@ function search() {
       $("#results").append(data);
       t2 = new Date();
       $("#resultsCaption").append(
-        "<br/>Finished in " + (t2 - t1) / 1000 + " seconds."
+        "<br/>Loaded in " + (t2 - t1) / 1000 + " seconds."
       );
     }
   );

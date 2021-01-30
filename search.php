@@ -14,11 +14,11 @@ switch ($mode) {
     case "rollupDirector":
         $sql = 'SELECT
                     directors.full_name as Director
-                    ,average_rank
+                    ,Rating
                 FROM(
                     SELECT
                         director_id
-                        ,avg(ranks.rank) average_rank
+                        ,TRUNCATE(avg(ranks.rank),2) Rating
                     FROM
                         ranks
                     GROUP BY 
@@ -34,12 +34,12 @@ switch ($mode) {
         $sql = 'SELECT
                     directors.full_name as Director
                     ,actors.full_name as Actor
-                    ,average_rank
+                    ,Rating
                 FROM(
                     SELECT
                         director_id
                         ,actor_id
-                        ,avg(ranks.rank) average_rank
+                        ,TRUNCATE(avg(ranks.rank),2) Rating
                     FROM
                         ranks
                     GROUP BY 
@@ -59,13 +59,13 @@ switch ($mode) {
                     directors.full_name as Director
                     ,actors.full_name as Actor
                     ,movies.name as Movie
-                    ,average_rank
+                    ,Rating
                 FROM(
                     SELECT
                         director_id
                         ,actor_id
                         ,movie_id
-                        ,avg(ranks.rank) average_rank
+                        ,TRUNCATE(avg(ranks.rank),2) Rating
                     FROM
                         ranks
                     GROUP BY 
