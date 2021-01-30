@@ -91,12 +91,12 @@ $result = $con->query($sql) or die($con->connect_error);
 $finfo = $result->fetch_fields();
 $numFields = count($finfo);
 
-echo "<tr>";
-echo "<th></th>";
+echo '<thead class="thead-dark">';
+echo "<th>#</th>";
 foreach ($finfo as $val) {
     echo "<th>" .  $val->name . "</th>";
 }
-echo "</tr>";
+echo "</thead>";
 $rowCount = 0;
 while ($row = $result->fetch_array()) {
 

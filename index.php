@@ -38,9 +38,13 @@
         </div>
     </div>
     <p name="resultsCaption" id="resultsCaption"></p>
-    <button type="button" class="btn btn-primary">ROLL UP</button>
-    <button type="button" class="btn btn-primary">DRILL DOWN</button>
-    <table name="results" id="results">
+    <div class="card container">
+        <div class="row d-flex justify-content-center">
+            <button type="button" class="btn btn-primary m-2">ROLL UP</button>
+            <button type="button" class="btn btn-primary m-2">DRILL DOWN</button>
+        </div>
+        <table name="results" id="results" class="table table-bordered">
+    </div>
     </table>
 </body>
 
