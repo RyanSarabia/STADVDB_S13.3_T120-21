@@ -13,46 +13,75 @@ $offset = $pageNum * $pageLimit;
 switch ($mode) {
     case "rollupDirector":
         $sql = 'SELECT
-                    director_id as Director
-                    ,TRUNCATE(SUM(ranks.rank)/COUNT(ranks.rank), 2)  as Rating
-                FROM
-                    ranks
-                WHERE ranks.rank is not NULL
-                GROUP BY 
-                    director_id
-                LIMIT ' . $pageLimit . ' OFFSET ' . $offset;
+                    directors.full_name as Director
+                    ,average_rank
+                FROM(
+                    SELECT
+                        director_id
+                        ,avg(ranks.rank) average_rank
+                    FROM
+                        ranks
+                    GROUP BY 
+                        director_id
+                    WITH ROLLUP
+                    LIMIT ' . $pageLimit . ' OFFSET ' . $offset.') as selectedRanks
+                LEFT JOIN directors USING (director_id)
+                ORDER BY
+                    director_id IS NULL, director_id asc
+                ';
         break;
     case "rollupActor":
         $sql = 'SELECT
-                    director_id as Director
-                    ,actor_id as Actor
-                    -- ,movie_id
-                    ,TRUNCATE(SUM(ranks.rank)/COUNT(ranks.rank), 2)  as Rating
-                FROM
-                    ranks
-                WHERE ranks.rank is not NULL
-                GROUP BY 
-                    director_id
-                    ,actor_id
-                    -- ,movie_id
-                WITH ROLLUP
-                LIMIT ' . $pageLimit . ' OFFSET ' . $offset;
+                    directors.full_name as Director
+                    ,actors.full_name as Actor
+                    ,average_rank
+                FROM(
+                    SELECT
+                        director_id
+                        ,actor_id
+                        ,avg(ranks.rank) average_rank
+                    FROM
+                        ranks
+                    GROUP BY 
+                        director_id
+                        ,actor_id
+                    WITH ROLLUP
+                    LIMIT ' . $pageLimit . ' OFFSET ' . $offset.') as selectedRanks
+                LEFT JOIN directors USING (director_id)
+                LEFT JOIN actors USING (actor_id)
+                ORDER BY
+                    director_id IS NULL, director_id asc
+                    , actor_id IS NULL, actor_id asc
+                ';
         break;
     case "rollupMovie":
         $sql = 'SELECT
-                    director_id as Director
-                    ,actor_id as Actor
-                    ,movie_id as Movie
-                    ,TRUNCATE(SUM(ranks.rank)/COUNT(ranks.rank), 2)  as Rating
-                FROM
-                    ranks
-                WHERE ranks.rank is not NULL
-                GROUP BY 
-                    director_id
-                    ,actor_id
-                    ,movie_id
-                WITH ROLLUP
-                LIMIT ' . $pageLimit . ' OFFSET ' . $offset;
+                    directors.full_name as Director
+                    ,actors.full_name as Actor
+                    ,movies.name as Movie
+                    ,average_rank
+                FROM(
+                    SELECT
+                        director_id
+                        ,actor_id
+                        ,movie_id
+                        ,avg(ranks.rank) average_rank
+                    FROM
+                        ranks
+                    GROUP BY 
+                        director_id
+                        ,actor_id
+                        ,movie_id
+                    WITH ROLLUP
+                    LIMIT ' . $pageLimit . ' OFFSET ' . $offset.') as selectedRanks
+                LEFT JOIN directors USING (director_id)
+                LEFT JOIN actors USING (actor_id)
+                LEFT JOIN movies USING (movie_id)
+                ORDER BY
+                    director_id IS NULL, director_id asc
+                    , actor_id IS NULL, actor_id asc
+                    , movie_id IS NULL, movie_id asc
+                ';
         break;
 }
 
