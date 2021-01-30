@@ -126,7 +126,7 @@ ranks = etl.cut(moviesAndGenresAndDirectorsAndRoles,
                 'movie_id', 'rank', 'director_id', 'actor_id')
 movies = etl.cut(moviesAndGenresAndDirectorsAndRoles,
                  'movie_id', 'name', 'year')
-directors = etl.cut(directorsAndMovies, 'id', 'full_name', 'movie_id')
+directors = etl.cut(directorsAndMovies, 'id', 'full_name')
 actors = etl.cut(actors, 'id', 'gender', 'full_name')
 
 # Rename id to include table name
