@@ -14,6 +14,7 @@ switch ($mode) {
     case "rollupDirector":
         $sql = 'SELECT
                     directors.full_name as Director
+                    ,director_id
                     ,Rating
                 FROM(
                     SELECT
@@ -21,6 +22,7 @@ switch ($mode) {
                         ,TRUNCATE(avg(ranks.rank),2) Rating
                     FROM
                         ranks
+                    -- WHERE director_id = 22
                     GROUP BY 
                         director_id
                     WITH ROLLUP
@@ -33,7 +35,9 @@ switch ($mode) {
     case "rollupActor":
         $sql = 'SELECT
                     directors.full_name as Director
+                    ,director_id
                     ,actors.full_name as Actor
+                    ,actor_id
                     ,Rating
                 FROM(
                     SELECT
@@ -42,6 +46,7 @@ switch ($mode) {
                         ,TRUNCATE(avg(ranks.rank),2) Rating
                     FROM
                         ranks
+                    -- WHERE director_id = 22
                     GROUP BY 
                         director_id
                         ,actor_id
@@ -57,8 +62,11 @@ switch ($mode) {
     case "rollupMovie":
         $sql = 'SELECT
                     directors.full_name as Director
+                    ,director_id
                     ,actors.full_name as Actor
+                    ,actor_id
                     ,movies.name as Movie
+                    ,movie_id
                     ,Rating
                 FROM(
                     SELECT
@@ -94,14 +102,16 @@ $numFields = count($finfo);
 echo '<thead class="thead-dark">';
 echo "<th>#</th>";
 foreach ($finfo as $val) {
-    echo "<th>" .  $val->name . "</th>";
+    if (substr_compare($val->name, "_id", -3) != 0){
+        echo "<th>" .  $val->name . "</th>";
+    }
 }
 echo "</thead>";
 $rowCount = 0;
 while ($row = $result->fetch_array()) {
 
     $rollup = 0;
-    for($i = 0; $i < $numFields; $i++){
+    for($i = 0; $i < $numFields; $i+=2){
         if ($row[$i] == ""){
             $rollup++;
         }
@@ -111,16 +121,22 @@ while ($row = $result->fetch_array()) {
     $rowCount++;
     echo "<td>" . ($offset+$rowCount) . "</td>";
 
-    $rollupOn = false;
-    for($i = 0; $i < $numFields; $i++){
-        if($numFields - $i == $rollup+2){
-            $rollupOn = true;
+    $rollupClass = "";
+    for($i = 0; $i < $numFields; $i+=2){
+        $clickableClass = "";
+        $onclick = "";
+        $strName = "'".$row[$i]."'";
+        if($i+1 < $numFields && $row[$i] != ""){    
+            // $onclick = 'onclick="slice(' . $row[$i]+1 . ','.addslashes($strName).')"'; // onlick="slice(22,'Veikko Aaltonen')"
+            $onclick = 'onclick="slice('. $row[$i+1] .','. $strName .')"';
+            $clickableClass = " clickable";
         }
-        if ($rollupOn){
-            echo '<td class="rollup'.$rollup.'">' . $row[$i] . '</td>';
-        } else {
-            echo "<td>" . $row[$i] . "</td>";
+        // $numFields - $i == $rollup+2
+        if($i == $numFields-3-($rollup*2)){   
+            $rollupClass .= " rollup".$rollup;
         }
+
+        echo '<td class="'.$rollupClass.$clickableClass.'" '.$onclick.' >' . $row[$i] . '</td>';
     }
     echo "</tr>";
 };

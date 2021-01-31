@@ -13,18 +13,6 @@ body * {
   font-weight: bold;
 }
 
-.rollup0 {
-  background-color: rgb(224, 252, 255);
-}
-
-.rollup1 {
-  background-color: rgb(196, 249, 255);
-}
-
-.rollup2 {
-  background-color: rgb(148, 244, 255);
-}
-
 /* .blank {
   background-color: black;
   color: white;
@@ -37,4 +25,25 @@ td {
   /* border: 1px solid black;
   border-collapse: collapse; */
   padding: 5px;
+}
+
+.clickable {
+  cursor: pointer;
+  background-color: white;
+}
+
+.clickable:hover {
+  filter: drop-shadow(5px 5px 5px gray);
+}
+
+.rollup0 {
+  background-color: rgb(224, 252, 255);
+}
+
+.rollup1 {
+  background-color: rgb(196, 249, 255);
+}
+
+.rollup2 {
+  background-color: rgb(148, 244, 255);
 }
