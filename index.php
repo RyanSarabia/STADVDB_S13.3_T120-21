@@ -17,33 +17,36 @@
 
 <body class="p-5">
     <h1 class="text-center font-weight-bold">IMDB RATINGS</h1>
-    <div class="row p-4 d-flex justify-content-center align-items-center">
-        <div>
+    <div class="container d-flex justify-content-between align-items-end">
+        <!-- <div>
             <label for="searchMode" class="mt-2">search by:</label>
             <select name="searchMode" id="searchMode">
                 <option value="rollupDirector">Director Average Rating</option>
                 <option value="rollupActor">Actors Average Rating</option>
                 <option value="rollupMovie">Movies Rating</option>
             </select>
-        </div>
-        <div class="mx-4 d-flex">
+        </div> -->
+        <!-- <div class="mx-4 d-flex">
             <input type="text" name="searchQuery" id="searchQuery" placeholder="enter movie name">
             <input type="text" name="searchQuery2" id="searchQuery2" placeholder="enter movie name" hidden>
             <input type="button" name="searchBtn" id="searchBtn" value="Search">
-        </div>
+        </div> -->
+        <p name="resultsCaption" id="resultsCaption" class="m-0"></p>
         <div class="px-3 d-flex justify-content-center align-items-center">
             <a name="prevBtn" id="prevBtn"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></a>
             <input type="number" name="pageNum" id="pageNum" min="1" class="px-3 h5"></Text>
             <a name="nextBtn" id="nextBtn"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
         </div>
     </div>
-    <p name="resultsCaption" id="resultsCaption"></p>
+    <div class="container">
+    </div>
     <div class="card container">
-        <div class="row d-flex justify-content-center">
-            <button type="button" class="btn btn-primary m-2">ROLL UP</button>
-            <button type="button" class="btn btn-primary m-2">DRILL DOWN</button>
+        <div class="row d-flex justify-content-between">
+            <button type="button" id="rollupBtn" class="btn btn-primary font-weight-bold mx-4 my-3" hidden>ROLL UP</button>
+            <div></div>
+            <button type="button" id="drilldownBtn" class="btn btn-primary font-weight-bold mx-4 my-3">DRILL DOWN</button>
         </div>
-        <table name="results" id="results" class="table table-bordered">
+        <table name="results" id="results" class="table ">
     </div>
     </table>
 </body>
@@ -51,22 +54,3 @@
 <script type="text/javascript" src="home.js"></script>
 
 </html>
-
-<?php
-
-// include_once("connections/connection.php");
-
-// $con = connection();
-
-// $strSearch = "star wars";
-
-// $sql = 'SELECT name FROM movies WHERE name LIKE "%'.$strSearch.'%" LIMIT 20 OFFSET 0';
-
-// $result = $con->query($sql) or die ($con->connect_error);
-
-// echo "<ol>";
-// while($row = $result->fetch_assoc()){
-//     echo "<li>".$row['name']."</li>";
-// };
-// echo "</ol>";
-?>
