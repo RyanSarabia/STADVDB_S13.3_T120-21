@@ -42,9 +42,23 @@
     </div>
     <div class="card container">
         <div class="row d-flex justify-content-between">
-            <button type="button" id="rollupBtn" class="btn btn-primary font-weight-bold mx-4 my-3" hidden>ROLL UP</button>
-            <div></div>
-            <button type="button" id="drilldownBtn" class="btn btn-primary font-weight-bold mx-4 my-3">DRILL DOWN</button>
+            <div style="min-width: 91px;">
+                <button type="button" id="rollupBtn" class="btn btn-primary font-weight-bold mx-4 my-3" hidden>ROLL UP</button>
+            </div>
+            <div>
+                <button type="button" id="sliceDirector" onclick="removeSlice('director_id')" class="btn btn-secondary font-weight-bold mx-1 my-3" hidden>
+                    <span class="textSpan">Director</span> <span class="glyphicon glyphicon-remove ml-2" aria-hidden="true">
+                </button>
+                <button type="button" id="sliceActor" onclick="removeSlice('actor_id')" class="btn btn-secondary font-weight-bold mx-1 my-3" hidden>
+                    <span class="textSpan">Actor</span> <span class="glyphicon glyphicon-remove ml-2" aria-hidden="true">
+                </button>
+                <button type="button" id="sliceMovie" onclick="removeSlice('movie_id')" class="btn btn-secondary font-weight-bold mx-1 my-3" hidden>
+                    <span class="textSpan">Movie</span> <span class="glyphicon glyphicon-remove ml-2" aria-hidden="true">
+                </button>
+            </div>
+            <div style="min-width: 91px;">
+                <button type="button" id="drilldownBtn" class="btn btn-primary font-weight-bold mx-4 my-3">DRILL DOWN</button>
+            </div>
         </div>
         <table name="results" id="results" class="table ">
     </div>

@@ -72,12 +72,37 @@ $(document).ready(function () {
 function slice(id, name, column) {
   if (column == "director_id") {
     sliceDirector = column + "=" + id;
+    $("#sliceDirector .textSpan").text(name);
+    $("#sliceDirector").prop("hidden", false);
   }
   if (column == "actor_id") {
     sliceActor = column + "=" + id;
+    $("#sliceActor .textSpan").text(name);
+    $("#sliceActor").prop("hidden", false);
   }
   if (column == "movie_id") {
     sliceMovie = column + "=" + id;
+    $("#sliceMovie .textSpan").text(name);
+    $("#sliceMovie").prop("hidden", false);
+  }
+  search();
+}
+
+function removeSlice(column) {
+  if (column == "director_id") {
+    sliceDirector = "";
+    $("#sliceDirector .textSpan").text("");
+    $("#sliceDirector").prop("hidden", true);
+  }
+  if (column == "actor_id") {
+    sliceActor = "";
+    $("#sliceActor .textSpan").text("");
+    $("#sliceActor").prop("hidden", true);
+  }
+  if (column == "movie_id") {
+    sliceMovie = "";
+    $("#sliceMovie .textSpan").text("");
+    $("#sliceMovie").prop("hidden", true);
   }
   search();
 }
