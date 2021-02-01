@@ -4,8 +4,40 @@ include_once("connections/connection.php");
 $con = connection();
 
 $mode = $_REQUEST["mode"];
-// $strSearch = $_REQUEST["strSearch"];
-// $strSearch2 = $_REQUEST["strSearch2"];
+
+$sliceDirector = $_REQUEST["sliceDirector"];
+$sliceActor = $_REQUEST["sliceActor"];
+$sliceMovie = $_REQUEST["sliceMovie"];
+
+$WHERE = "";
+$AND1 = "";
+$AND2 = "";
+
+$nSlices = 0;
+if ($sliceDirector != ""){
+    $nSlices++;
+}
+if ($sliceActor != ""){
+    $nSlices++;
+}
+if ($sliceMovie != ""){
+    $nSlices++;
+}
+
+echo  $nSlices;
+switch ($nSlices){
+    case 3: $AND2 = " AND ";
+    case 2: 
+        if ($sliceDirector == ""){
+            $AND2 = " AND ";
+        } else {
+            $AND1 = " AND ";
+        }
+    case 1: $WHERE = " WHERE "; break;
+    case 0:break;
+}
+echo 'Hello:' . $WHERE . $sliceDirector . $AND1 . $sliceActor . $AND2 . $sliceMovie;
+
 $pageNum = $_REQUEST["pageNum"] - 1;
 $pageLimit = 20;
 $offset = $pageNum * $pageLimit;
@@ -22,7 +54,7 @@ switch ($mode) {
                         ,TRUNCATE(avg(ranks.rank),2) Rating
                     FROM
                         ranks
-                    -- WHERE director_id = 22
+                    '. $WHERE . $sliceDirector . $AND1 . $sliceActor . $AND2 . $sliceMovie .'
                     GROUP BY 
                         director_id
                     WITH ROLLUP
@@ -46,7 +78,7 @@ switch ($mode) {
                         ,TRUNCATE(avg(ranks.rank),2) Rating
                     FROM
                         ranks
-                    -- WHERE director_id = 22
+                    '. $WHERE . $sliceDirector . $AND1 . $sliceActor . $AND2 . $sliceMovie .'
                     GROUP BY 
                         director_id
                         ,actor_id
@@ -76,6 +108,7 @@ switch ($mode) {
                         ,TRUNCATE(avg(ranks.rank),2) Rating
                     FROM
                         ranks
+                    '. $WHERE . $sliceDirector . $AND1 . $sliceActor . $AND2 . $sliceMovie .'
                     GROUP BY 
                         director_id
                         ,actor_id
@@ -126,9 +159,10 @@ while ($row = $result->fetch_array()) {
         $clickableClass = "";
         $onclick = "";
         $strName = "'".$row[$i]."'";
+        $strColumn = "'".$finfo[$i+1]->name."'";
         if($i+1 < $numFields && $row[$i] != ""){    
             // $onclick = 'onclick="slice(' . $row[$i]+1 . ','.addslashes($strName).')"'; // onlick="slice(22,'Veikko Aaltonen')"
-            $onclick = 'onclick="slice('. $row[$i+1] .','. $strName .')"';
+            $onclick = 'onclick="slice('. $row[$i+1] .','. $strName .','. $strColumn .')"';
             $clickableClass = " clickable";
         }
         // $numFields - $i == $rollup+2

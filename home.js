@@ -4,6 +4,9 @@ var mode = "";
 var modeNum = 1;
 var strMode = "";
 var maxPage = 125929;
+var sliceDirector = "";
+var sliceActor = "";
+var sliceMovie = "";
 
 $(document).ready(function () {
   $("#pageNum").val(pageNum);
@@ -66,6 +69,19 @@ $(document).ready(function () {
   });
 });
 
+function slice(id, name, column) {
+  if (column == "director_id") {
+    sliceDirector = column + "=" + id;
+  }
+  if (column == "actor_id") {
+    sliceActor = column + "=" + id;
+  }
+  if (column == "movie_id") {
+    sliceMovie = column + "=" + id;
+  }
+  search();
+}
+
 function updateMode() {
   /// Modes
   // 1) rollupDirector
@@ -101,6 +117,9 @@ function search() {
     "search.php",
     {
       mode: mode,
+      sliceDirector: sliceDirector,
+      sliceActor: sliceActor,
+      sliceMovie: sliceMovie,
       pageNum: pageNum,
     },
     function (data) {
