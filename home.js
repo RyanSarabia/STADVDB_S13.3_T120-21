@@ -85,6 +85,7 @@ function slice(id, name, column) {
     $("#sliceMovie .textSpan").text(name);
     $("#sliceMovie").prop("hidden", false);
   }
+  pageNum = 1;
   search();
 }
 
@@ -104,6 +105,7 @@ function removeSlice(column) {
     $("#sliceMovie .textSpan").text("");
     $("#sliceMovie").prop("hidden", true);
   }
+  pageNum = 1;
   search();
 }
 
