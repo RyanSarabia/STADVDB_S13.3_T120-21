@@ -1,4 +1,4 @@
-# STADVDB_S13.3_T120-21 (PHP version)
+# STADVDB_S13.3_T120-21 MCO2
 * Cai, Mark Jayson
 * Sanchez, Martin Christopher
 * Santos, Carlo Luis
@@ -6,7 +6,7 @@
 * So, Brian Jezreel
 
 ## Deployed Web Application
-This web application is deployed to Infinity Free and can be accessed using this link: http://imdbnav.42web.io/ 
+This web application is deployed to Infinity Free and can be accessed using this link: http://imdb-warehouse.infinityfreeapp.com/
 
 ## Local Web Application
 ### Setting up XAMPP and configurations
@@ -22,6 +22,9 @@ This web application is deployed to Infinity Free and can be accessed using this
 ### Optimizing the database
 1. After creating the **imdb_ijs** database, select it and open the **SQL tab**
 2. Copy and paste the contents from **optimization.sql** and click **Go**
+### Creating the data warehouse
+1. Run the **Create Warehouse Tables.sql** file to create the **imdb_warehouse** schema
+2. When this is done, run the **etl.py** file in the Python ETL folder.
 ### Accessing the application
 1. After setting up your XAMPP configurations, start running **Apache** and **MySql** from the XAMPP Control Panel
 2. The application will then be available by accessing http://localhost/STADVDB_S13.3_T120-21/ from your browser.
