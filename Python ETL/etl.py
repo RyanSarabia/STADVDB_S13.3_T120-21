@@ -86,18 +86,15 @@ actorIdOnly = etl.pushheader(actorIdOnly, ['movie_id', 'actor_id'])
 
 #### Denormalizing Original Tables ####
 
-# Denormalize movies_genres into movies
-moviesAndGenres = etl.join(movies, movies_genres, key='movie_id')
-
 
 # Denormalize movies_directors into movies
-moviesAndGenresAndDirectors = etl.join(
-    moviesAndGenres, movies_directors, key='movie_id')
+moviesAndDirectors = etl.join(
+    movies, movies_directors, key='movie_id')
 
 
 # Denormalize roles into movies
-moviesAndGenresAndDirectorsAndRoles = etl.join(
-    moviesAndGenresAndDirectors, actorIdOnly, key='movie_id')
+moviesAndDirectorsAndRoles = etl.join(
+    moviesAndDirectors, actorIdOnly, key='movie_id')
 
 
 # Add fullname to actors
@@ -122,12 +119,12 @@ directorsAndMovies = etl.join(
 # print(moviesAndGenresAndDirectorsAndRoles)
 
 # Delete unnecessary columns from all tables
-ranks = etl.cut(moviesAndGenresAndDirectorsAndRoles,
+ranks = etl.cut(moviesAndDirectorsAndRoles,
                 'movie_id', 'rank', 'director_id', 'actor_id')
-movies = etl.cut(moviesAndGenresAndDirectorsAndRoles,
-                 'movie_id', 'name', 'year')
+movies = etl.cut(moviesAndDirectorsAndRoles,
+                 'movie_id', 'name')
 directors = etl.cut(directorsAndMovies, 'id', 'full_name')
-actors = etl.cut(actors, 'id', 'gender', 'full_name')
+actors = etl.cut(actors, 'id', 'full_name')
 
 # Rename id to include table name
 directors = etl.rename(directors, 'id', 'director_id')
